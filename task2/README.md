@@ -127,16 +127,16 @@ and the kernel used by `make llama-demo`.)
 Additionally, submit a report (PDF) that includes the following plots and justifies the
 observed performance gains or losses for each:
 
-1. **Speedup vs. matrix size** — for each of `matmul_simd`, `matmul_prefetch`, and
+1. **Speedup vs. matrix size** : for each of `matmul_simd`, `matmul_prefetch`, and
    `matmul_optimized` over `matmul_naive`, varying `M=N=K` across a range of sizes (small
    enough to fit in cache up through sizes well beyond it, e.g. 128 up to 2048 or larger).
-2. **Speedup vs. prefetch degree** — for `matmul_prefetch`, sweep the prefetch distance (how
+2. **Speedup vs. prefetch degree** : for `matmul_prefetch`, sweep the prefetch distance (how
    many floats/cache lines ahead you prefetch) and plot speedup over `matmul_naive` at each
    distance.
-3. **Speedup vs. prefetch level** — for `matmul_prefetch`, compare the `_MM_HINT_T0`,
+3. **Speedup vs. prefetch level** : for `matmul_prefetch`, compare the `_MM_HINT_T0`,
    `_MM_HINT_T1`, `_MM_HINT_T2`, and `_MM_HINT_NTA` locality hints and plot the resulting
    speedup for each.
-4. **Speedup vs. SIMD width** — implement and compare 128-bit (SSE), 256-bit (AVX2), and
+4. **Speedup vs. SIMD width** : implement and compare 128-bit (SSE), 256-bit (AVX2), and
    512-bit (AVX-512) variants of your SIMD kernel, and plot the speedup each achieves over
    `matmul_naive`. Build these variants with the appropriate flags (e.g. `-msse4.2`, `-mavx2
    -mfma`, `-mavx512f`) for your own local measurements only  the graded submission of

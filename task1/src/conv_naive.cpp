@@ -1,13 +1,7 @@
-// conv_naive.cpp — PROVIDED reference implementation.
+// conv_naive.cpp  PROVIDED reference implementation.
 //
 // This is the correctness baseline AND the performance baseline that all speedups
 // are measured against. Do NOT modify this file.
-//
-// The loop nest is the "textbook" one: for every output pixel, sweep the whole
-// kernel and accumulate. The kernel loops are innermost, so the input is read with
-// a strided, cache-unfriendly pattern and the compiler (with auto-vectorization
-// pinned OFF, see the Makefile) emits plain scalar FMAs. Your job in the other
-// stages is to do much better than this.
 
 #include "convolution.h"
 

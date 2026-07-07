@@ -1,4 +1,4 @@
-# CS683 PA-1 Task 1 — build file.
+# CS683 PA-1 Task 1  build file.
 #
 # The compiler flags are PINNED and identical for every stage so that all speedups
 # are attributable to the techniques you implement, not to compiler options:

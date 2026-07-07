@@ -1,9 +1,5 @@
-// utils.h — allocation, initialization, and correctness helpers (CS683 PA-1, Task 1)
-//
-// Header-only. Students generally do not need to touch this file; it exists so the
-// harness (and the reference implementation) build the padded buffers and check
-// results in one consistent place.
-
+// utils.h  allocation, initialization, and correctness helpers (CS683 PA-1, Task 1)
+// Header-only. Students generally do not need to touch this file
 #ifndef CS683_PA1_UTILS_H
 #define CS683_PA1_UTILS_H
 

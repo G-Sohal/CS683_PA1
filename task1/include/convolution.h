@@ -1,4 +1,4 @@
-// convolution.h — shared interface for all convolution stages (CS683 PA-1, Task 1)
+// convolution.h  shared interface for all convolution stages (CS683 PA-1, Task 1)
 //
 // Every stage implements the SAME signature so the harness can call them uniformly
 // and compare their results and timings.
@@ -12,7 +12,7 @@
 //   out : output image, H rows x W cols, row-major, row stride = W.
 //   ker : convolution kernel, K x K, row-major (row stride = K).
 //
-// Definition (cross-correlation, i.e. the ML convention — the kernel is NOT flipped):
+// Definition (cross-correlation, i.e. the ML convention  the kernel is NOT flipped):
 //
 //   out[y*W + x] = sum_{ky=0..K-1} sum_{kx=0..K-1}
 //                      in[(y+ky)*(W+2p) + (x+kx)] * ker[ky*K + kx]

@@ -1,4 +1,4 @@
-// main.cpp — PROVIDED test / grading harness for Task 1.  Do NOT modify.
+// main.cpp  PROVIDED test / grading harness for Task 1.  Do NOT modify.
 //
 // No arguments -> full graded run (correctness smoke test, graded K=3 workload with a
 // score, and a reference K=5 table).
@@ -192,7 +192,7 @@ static const char* match_stage(const char* s) {
 }
 
 int main(int argc, char** argv) {
-    std::printf("CS683 PA-1 Task 1 — 2D convolution optimization harness\n");
+    std::printf("CS683 PA-1 Task 1  2D convolution optimization harness\n");
 
     // ---- full graded run (no arguments) ------------------------------------
     if (argc == 1) {

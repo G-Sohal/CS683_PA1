@@ -1,11 +1,11 @@
-// main.cpp — PROVIDED test / grading harness for Task 2.  Do NOT modify.
+// main.cpp  PROVIDED test / grading harness for Task 2.  Do NOT modify.
 //
 // No arguments -> full graded run (correctness smoke test + graded workload with a score).
 // You can also check ONE stage in isolation on a workload of your choice while developing:
 //
-//     ./bin/matmul reorder                # naive vs reorder, default size
-//     ./bin/matmul simd 1024 1024 1024    # custom M N K
-//     ./bin/matmul simd 1024 1024 1024 42 # ... and a custom RNG seed
+//     ./bin/matmul simd                   # naive vs simd, default size
+//     ./bin/matmul prefetch 1024 1024 1024    # custom M N K
+//     ./bin/matmul prefetch 1024 1024 1024 42 # ... and a custom RNG seed
 //     ./bin/matmul all 512 512 512        # every stage on a custom workload (no score)
 //     ./bin/matmul help                   # usage
 //
@@ -35,8 +35,8 @@ static constexpr int kReps = 3;
 static constexpr int kDefN = 1024;
 static constexpr unsigned kDefSeed = 1234u;
 
-// Scoring: 6 scored stages (reorder, unroll, tile, simd, prefetch, optimized).
-static constexpr double kCorrectPtsPerStage = 5.0;  // -> 6 * 5 = 30 correctness points
+// Scoring: 3 scored stages (simd, prefetch, optimized).
+static constexpr double kCorrectPtsPerStage = 10.0;  // -> 3 * 10 = 30 correctness points
 
 struct Tier {
     double speedup;
@@ -61,16 +61,13 @@ struct Stage {
     bool scored;  // false only for the naive reference
 };
 
-// Stage order is the standard GEMM optimization sequence: build a fast register-blocked
-// SIMD micro-kernel first, THEN cache-tile it. (Cache tiling only pays off once the kernel
-// is fast enough to be memory-bound; on the scalar stages it is compute-bound and tiling
-// would show nothing — so SIMD comes before tiling here.)
+// Stage order is the standard GEMM optimization sequence: a fast register-blocked SIMD
+// micro-kernel first, THEN cache-block it and add software prefetch. (Cache tiling only pays
+// off once the kernel is fast enough to be memory-bound  a scalar loop is compute-bound and
+// tiling would show nothing  so SIMD comes first.)
 static const Stage kStages[] = {
     {"naive (ref)", "naive", matmul_naive, false},
-    {"reorder", "reorder", matmul_reorder, true},
-    {"unroll", "unroll", matmul_unroll, true},
     {"simd", "simd", matmul_simd, true},
-    {"tile", "tile", matmul_tile, true},
     {"prefetch", "prefetch", matmul_prefetch, true},
     {"optimized", "optimized", matmul_optimized, true},
 };
@@ -178,11 +175,11 @@ static void usage(const char* prog) {
     std::printf("  %s                        full graded run (score printed)\n", prog);
     std::printf("  %s <stage> [M N K] [seed]     check one stage on a workload\n", prog);
     std::printf("  %s all [M N K] [seed]         run every stage (no score)\n", prog);
-    std::printf("\nstage: naive | reorder | unroll | tile | simd | prefetch | optimized | all\n");
+    std::printf("\nstage: naive | simd | prefetch | optimized | all\n");
     std::printf("M, N, K default to %d; seed defaults to %u. All sizes must be positive.\n",
                 kDefN, kDefSeed);
     std::printf("\nExamples:\n");
-    std::printf("  %s simd            %s tile 1024 1024 1024            %s all 512 512 512\n",
+    std::printf("  %s simd            %s prefetch 1024 1024 1024        %s all 512 512 512\n",
                 prog, prog, prog);
 }
 
@@ -194,7 +191,7 @@ static const char* match_stage(const char* s) {
 }
 
 int main(int argc, char** argv) {
-    std::printf("CS683 PA-1 Task 2 — matrix multiplication optimization harness\n");
+    std::printf("CS683 PA-1 Task 2  matrix multiplication optimization harness\n");
 
     if (argc == 1) {
         // Fast correctness smoke test on a small workload.
@@ -208,8 +205,8 @@ int main(int argc, char** argv) {
 
         run_config(kDefN, kDefN, kDefN, kDefSeed, nullptr, /*show=*/true, /*scored=*/true);
         std::printf(
-            "\nhint: cache tiling's payoff grows with size. Try a bigger matmul, e.g.\n"
-            "      ./bin/matmul all 2048 2048 2048   (watch simd vs tile diverge).\n");
+            "\nhint: cache blocking's payoff grows with size. Try a bigger matmul, e.g.\n"
+            "      ./bin/matmul all 2048 2048 2048   (watch simd vs optimized diverge).\n");
         return 0;
     }
 

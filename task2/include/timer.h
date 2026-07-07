@@ -1,4 +1,4 @@
-// timer.h — median wall-clock timing helper (CS683 PA-1, Task 2)
+// timer.h  median wall-clock timing helper (CS683 PA-1, Task 2)
 //
 // Header-only. Runs a callable `warmup` times (to warm caches / branch predictors),
 // then `reps` timed times, and returns the MEDIAN elapsed time in milliseconds.

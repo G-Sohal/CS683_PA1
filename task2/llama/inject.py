@@ -44,7 +44,7 @@ def patch_cpu_c(root):
     path = os.path.join(root, "ggml/src/ggml-cpu/ggml-cpu.c")
     src = open(path).read()
     if MARKER in src:
-        print("  ggml-cpu.c already injected — skipping")
+        print("  ggml-cpu.c already injected  skipping")
         return
     if ANCHOR not in src:
         sys.exit(f"ERROR: anchor not found in {path} (llama.cpp version mismatch?)")
@@ -59,7 +59,7 @@ def patch_cmake(root):
     path = os.path.join(root, "ggml/src/ggml-cpu/CMakeLists.txt")
     src = open(path).read()
     if "ggml_student_sgemm.cpp" in src:
-        print("  CMakeLists.txt already injected — skipping")
+        print("  CMakeLists.txt already injected  skipping")
         return
     key = "ggml-cpu/ggml-cpu.cpp"
     if key not in src:

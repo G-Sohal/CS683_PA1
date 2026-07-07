@@ -1,4 +1,4 @@
-// utils.h — allocation, initialization, and correctness helpers (CS683 PA-1, Task 2)
+// utils.h  allocation, initialization, and correctness helpers (CS683 PA-1, Task 2)
 //
 // Header-only. Students generally do not need to touch this file; the harness and the
 // reference implementation use it to build buffers and check results consistently.

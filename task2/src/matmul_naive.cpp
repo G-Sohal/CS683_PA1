@@ -1,13 +1,7 @@
-// matmul_naive.cpp — PROVIDED reference implementation.
+// matmul_naive.cpp  PROVIDED reference implementation.
 //
 // The correctness baseline AND the performance baseline that all speedups are measured
 // against. Do NOT modify this file.
-//
-// Textbook triple loop: for each output element C[i][j], take the dot product of row i of
-// A with row j of B (both K long, contiguous). It is correct and simple, but every C[i][j]
-// re-reads a full A row and a full B row from memory with no reuse across neighbours, and
-// (with auto-vectorization pinned OFF, see the Makefile) the dot product runs as scalar
-// FMAs. Your job in the other stages is to do much better.
 
 #include "matmul.h"
 

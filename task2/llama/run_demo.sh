@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# run_demo.sh — clone llama.cpp, build it, inject the student's matmul_optimized into ggml's
+# run_demo.sh  clone llama.cpp, build it, inject the student's matmul_optimized into ggml's
 # CPU F32 matmul, and run a tiny LLM inference comparing the student kernel against llama.cpp's
 # native CPU matmul (single-threaded).
 #
 # Invoked by `make llama-demo`. Overridable via environment variables:
 #   LLAMA_TAG   git tag to build            (default b5731)
 #   LLAMA_SRC   where to clone/build         (default <task2>/llama/llama.cpp)
-#   MODEL_URL   tiny F32 GGUF to fetch       (default stories260K.gguf — F32, ~1.2MB)
+#   MODEL_URL   tiny F32 GGUF to fetch       (default stories260K.gguf  F32, ~1.2MB)
 #   PROMPT / NGEN                            (default "Once upon a time" / 64)
 set -euo pipefail
 
@@ -53,7 +53,7 @@ echo ">>> building STUDENT llama-cli"
 cmake -S "$SRC" -B "$SRC/build-student" "${CMAKE_COMMON[@]}" >/dev/null
 cmake --build "$SRC/build-student" -j"$JOBS" --target llama-cli >/dev/null
 
-# 4) tiny F32 model (F32 so the F32 mul_mat path — the one we injected — actually runs)
+# 4) tiny F32 model (F32 so the F32 mul_mat path  the one we injected  actually runs)
 mkdir -p "$HERE/models"
 [ -f "$MODEL" ] || { echo ">>> downloading tiny model"; curl -fL -o "$MODEL" "$MODEL_URL"; }
 
@@ -71,13 +71,13 @@ echo "================ RESULT ================"
 if grep -q "matmul_optimized is now serving" /tmp/mm_student.err; then
     echo "[ok] student matmul_optimized was actually used by ggml"
 else
-    echo "[WARN] student kernel marker not seen — the F32 path may not have fired"
+    echo "[WARN] student kernel marker not seen  the F32 path may not have fired"
     echo "       (is the model F32? is -t 1 set?)"
 fi
 if diff -q /tmp/mm_stock.out /tmp/mm_student.out >/dev/null; then
     echo "[ok] student output matches stock output token-for-token (kernel is correct)"
 else
-    echo "[FAIL] student output differs from stock — kernel is numerically wrong:"
+    echo "[FAIL] student output differs from stock  kernel is numerically wrong:"
     diff /tmp/mm_stock.out /tmp/mm_student.out | head
 fi
 echo

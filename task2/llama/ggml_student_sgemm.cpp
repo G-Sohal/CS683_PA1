@@ -1,4 +1,4 @@
-// ggml_student_sgemm.cpp — adapter that exposes the student's matmul_optimized to ggml.
+// ggml_student_sgemm.cpp  adapter that exposes the student's matmul_optimized to ggml.
 //
 // Copied into ggml/src/ggml-cpu/ by run_demo.sh and compiled into libggml-cpu. The injected
 // call in ggml_compute_forward_mul_mat (see llama/inject.py) calls student_mul_mat_f32 for the
@@ -9,7 +9,7 @@
 // for i0 in [0,ne01), i1 in [0,ne11).  The student's matmul computes
 //     C[i*ldc + j] = dot(Amat_row_i, Bmat_row_j).
 // Mapping (dot is symmetric in its operands): call matmul_optimized with Amat = src1, Bmat = src0,
-// M = ne11, N = ne01, K = ne00 — then C[i1*ldc + i0] = dot(src1_i1, src0_i0), exactly ggml's dst.
+// M = ne11, N = ne01, K = ne00  then C[i1*ldc + i0] = dot(src1_i1, src0_i0), exactly ggml's dst.
 
 #include <cstdint>
 #include <cstdio>

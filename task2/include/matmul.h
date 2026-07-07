@@ -1,7 +1,7 @@
-// matmul.h — shared interface for all matmul stages (CS683 PA-1, Task 2)
+// matmul.h  shared interface for all matmul stages (CS683 PA-1, Task 2)
 //
 // Every stage implements the SAME signature so the harness can call them uniformly and
-// compare results and timings — and so the SAME kernel drops straight into llama.cpp.
+// compare results and timings  and so the SAME kernel drops straight into llama.cpp.
 //
 // Layout (chosen to match ggml's ggml_mul_mat, the "NT" form). The contraction dim K is
 // the INNER / contiguous dimension of BOTH operands:
@@ -16,7 +16,7 @@
 // leading-dimension arguments exist so the identical function can be injected into
 // ggml's CPU matmul, where the strides come from the tensor's `nb` fields.
 //
-// The inner K-loop is therefore a unit-stride dot product over both operands — the shape
+// The inner K-loop is therefore a unit-stride dot product over both operands  the shape
 // AVX2/FMA and register tiling want.
 
 #ifndef CS683_PA1_MATMUL_H
@@ -33,12 +33,6 @@ using MatMulFn = void (*)(const float* A, const float* B, float* C,
 
 void matmul_naive(const float* A, const float* B, float* C,
                   int M, int N, int K, int lda, int ldb, int ldc);
-void matmul_reorder(const float* A, const float* B, float* C,
-                    int M, int N, int K, int lda, int ldb, int ldc);
-void matmul_unroll(const float* A, const float* B, float* C,
-                   int M, int N, int K, int lda, int ldb, int ldc);
-void matmul_tile(const float* A, const float* B, float* C,
-                 int M, int N, int K, int lda, int ldb, int ldc);
 void matmul_simd(const float* A, const float* B, float* C,
                  int M, int N, int K, int lda, int ldb, int ldc);
 void matmul_prefetch(const float* A, const float* B, float* C,

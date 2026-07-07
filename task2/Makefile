@@ -1,4 +1,4 @@
-# CS683 PA-1 Task 2 — build file.
+# CS683 PA-1 Task 2  build file.
 #
 # The compiler flags are PINNED and identical for every stage so that all speedups are
 # attributable to the techniques you implement, not to compiler options:
@@ -15,13 +15,11 @@ LDFLAGS  :=
 
 BIN          := bin
 MAIN         := src/main.cpp
-STUDENT_SRC  := src/matmul_naive.cpp src/matmul_reorder.cpp src/matmul_unroll.cpp \
-                src/matmul_tile.cpp src/matmul_simd.cpp src/matmul_prefetch.cpp \
+STUDENT_SRC  := src/matmul_naive.cpp src/matmul_simd.cpp src/matmul_prefetch.cpp \
                 src/matmul_optimized.cpp
 
 # Instructor-only: reference implementations used to calibrate/regress the tiers.
-SOLUTION_SRC := src/matmul_naive.cpp solution/matmul_reorder.cpp solution/matmul_unroll.cpp \
-                solution/matmul_tile.cpp solution/matmul_simd.cpp solution/matmul_prefetch.cpp \
+SOLUTION_SRC := src/matmul_naive.cpp solution/matmul_simd.cpp solution/matmul_prefetch.cpp \
                 solution/matmul_optimized.cpp
 
 .PHONY: all run solution clean llama-demo

@@ -1,10 +1,11 @@
-# CS683 PA-1  Hardware-Conscious Performance Engineering
+# CS683 PA-1: Hardware-Conscious Performance Engineering
 
-This assignment is in two parts. Both start from a correct-but-naive C++ kernel and ask you
-to make it fast by *thinking about the hardware*  the cache hierarchy, instruction-level
-parallelism, and the SIMD units of a modern x86 core  rather than by guessing.
+This assignment consists of two parts. Both start from a correct-but-naive C++ kernel and ask you
+to improve its performance by *thinking about the hardware*: the cache hierarchy, instruction-level
+parallelism, and the SIMD units of a modern x86 core.
 
-Full problem statement: see the assignment [doc](https://docs.google.com/document/d/1suURtM3WaensRvABVxlHZmhbbXe-g2v-sNi8gUfuojg/edit?usp=sharing).
+See the assignment [document](https://docs.google.com/document/d/1suURtM3WaensRvABVxlHZmhbbXe-g2v-sNi8gUfuojg/edit?usp=sharing)
+for the full problem statement.
 
 ## Tasks
 

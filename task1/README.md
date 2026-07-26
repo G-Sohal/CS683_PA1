@@ -1,28 +1,29 @@
-# CS683 PA-1 · Task 1  Hardware-Conscious 2D Convolution
+# CS683 PA-1, Task 1: Hardware-Conscious 2D Convolution
 
 In this task you take a correct-but-slow 2D convolution and make it fast by
 **thinking about the hardware**: the cache hierarchy, instruction-level parallelism,
 and the SIMD (vector) units of a modern x86 core. You will apply four classic
-techniques  **loop reordering, loop unrolling, cache tiling, and SIMD (AVX2)**  one
-per stage, and measure what each one buys you.
+techniques, **loop reordering, loop unrolling, cache tiling, and SIMD (AVX2)**,
+one per stage, and measure the benefit of each.
 
-The lesson is not just "make it fast" but *why* each transformation helps (or doesn't):
+The goal is not only to make the code fast, but also to understand *why* each
+transformation helps (or does not):
 the same arithmetic, reorganized to match the machine, runs an order of magnitude faster.
 
 ---
 
 ## 1. The computation
 
-A single-channel 2D convolution (cross-correlation  the kernel is **not** flipped) of a
-`float32` image with a `K×K` kernel, in zero-padded **"same"** mode so the output is the
-same size as the input:
+A single-channel 2D convolution of a `float32` image with a `K×K` kernel, in zero-padded
+**"same"** mode so the output is the same size as the input. This operation is technically
+cross-correlation because the kernel is **not** flipped.
 
 **Data layout (given to you; every stage uses the same signature):**
 
 ```cpp
 // in : PADDED input, (H+2p) rows × (W+2p) cols, row-major, row stride = W+2p, p = K/2
-//      The p-wide border is zero, so every access inside the loops is in-bounds 
-//      you never need a boundary check.
+//      The p-wide border is zero, so every access inside the loops is in bounds.
+//      No boundary check is required.
 // out: output, H × W, row-major, row stride = W
 // ker: kernel, K × K, row-major
 void conv_<stage>(const float* in, float* out, const float* ker,
@@ -37,8 +38,8 @@ remainder tail** to special-case. `K` is odd (3 and 5 are tested).
 ## 2. What you implement
 
 Edit **only** these five files in `src/`. Each already contains a detailed header
-comment describing the technique and a hint. `conv_naive` is provided and is the
-correctness reference  **do not modify it**.
+comment describing the technique and a hint. `conv_naive` is provided as the
+correctness reference. **Do not modify it.**
 
 | File | Technique | The idea in one line |
 |------|-----------|----------------------|
@@ -50,9 +51,10 @@ correctness reference  **do not modify it**.
 
 The stages build on each other. A key teaching point lives in the first two stages:
 the "obvious" reorder makes `K·K` passes over the whole (16 MB) output image, which does
-**not** fit in cache  so at `K=3` it can run *as slow as or slower than* naive, and
+**not** fit in cache. At `K=3`, it can therefore run *as slowly as or more slowly than*
+the naive implementation, and
 unrolling a memory-bound loop barely helps. **Cache tiling (Stage 3) is what unlocks the
-payoff.** Watch the speedup column tell that story.
+payoff.** The speedup column should demonstrate this behavior.
 
 ---
 
@@ -70,8 +72,8 @@ and your autograder score, followed by an ungraded `K=5` table for reference.
 ### Checking one stage while you develop it
 
 You do **not** have to finish everything before you can test. Each stub compiles from
-the start (it just calls naive), so the project always builds, and you can check a single
-stage in isolation  against the naive reference, on a workload you choose:
+the start because it calls the naive implementation, so the project always builds.
+You can check a single stage against the naive reference using a workload of your choice:
 
 ```bash
 ./bin/conv reorder              # naive vs reorder only, default 2048x2048 K=3
@@ -82,12 +84,13 @@ stage in isolation  against the naive reference, on a workload you choose:
 ```
 
 The `correct` column compares your kernel's output to `conv_naive` on that exact input
-(max abs error < `1e-3`), and the `speedup` column is measured against naive on the same
-workload  so this is your fast edit-build-check loop. Changing the seed generates a
-different random image/kernel, which is an easy way to gain confidence your kernel is
-correct on more than one input. The final score always comes from the no-argument run.
+(maximum absolute error < `1e-3`), and the `speedup` column is measured against the naive
+implementation on the same workload. This provides a fast edit-build-check cycle. Changing
+the seed generates a different random image/kernel, which is an easy way to gain confidence
+your kernel is correct on more than one input. The final score always comes from the
+no-argument run.
 
-### Compiler flags are pinned  do not change them
+### Compiler flags are pinned; do not change them
 
 The `Makefile` compiles **every** stage with the identical flags:
 
@@ -95,7 +98,7 @@ The `Makefile` compiles **every** stage with the identical flags:
 -std=c++17 -O2 -fno-tree-vectorize -mavx2 -mfma
 ```
 
-Do **not** add `-march=native`, `-O3`, or `-ftree-vectorize`  the autograder uses
+Do **not** add `-march=native`, `-O3`, or `-ftree-vectorize`. The autograder uses
 exactly the flags above.
 
 ---
@@ -108,6 +111,6 @@ Submit your five edited files:
 
 Additionally, plot the speedup of each optimized version (`conv_reorder`,
 `conv_unroll`, `conv_tile`, `conv_simd`, `conv_optimized`) over `conv_naive`,
-varying both the input matrix size and the kernel size. Submit a report
+varying both the input image dimensions and the kernel size. Submit a report
 (PDF) that includes these plots and justifies the observed performance
 gains or losses for each optimization technique.

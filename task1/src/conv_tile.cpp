@@ -8,7 +8,8 @@ void conv_tile(const float* in, float* out, const float* ker,
     // conv_naive(in, out, ker, H, W, K);
     const int p = K/2;
     const int stride = W + 2*p;
-    const int tile_H = 16, tile_W = 64;
+    const int tile_H = 16;
+    const int tile_W = 64;
     for(int y=0; y<H; y++) {
         for(int x=0; x<W; x++) out[(y*W + x)] = 0.0f;
     }

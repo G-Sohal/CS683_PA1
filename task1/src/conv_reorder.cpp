@@ -6,7 +6,7 @@ void conv_reorder(const float* in, float* out, const float* ker,
                   int H, int W, int K) {
     
     const int p = K / 2;
-    const int in_stride = W + 2 * p;  // padded row stride
+    const int in_stride = W + 2 * p;  
 
     for (int oy = 0; oy < H; ++oy) {
         for (int ox = 0; ox < W; ++ox) {
